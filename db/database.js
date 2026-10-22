@@ -1,8 +1,21 @@
-const Database = require('better-sqlite3');
-const path = require('path');
-const bcrypt = require('bcryptjs');
+const fs = require('fs');
 
-const dbPath = path.join(__dirname, 'store.db');
+const isVercel = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+const dbDir = isVercel ? '/tmp' : __dirname;
+const dbPath = path.join(dbDir, 'store.db');
+
+if (isVercel) {
+  const localDb = path.join(__dirname, 'store.db');
+  const tmpDb = path.join('/tmp', 'store.db');
+  if (fs.existsSync(localDb) && !fs.existsSync(tmpDb)) {
+    try {
+      fs.copyFileSync(localDb, tmpDb);
+    } catch (e) {
+      console.warn('Could not copy local DB to /tmp, will re-seed:', e.message);
+    }
+  }
+}
+
 const db = new Database(dbPath);
 
 // Enable foreign keys and WAL mode for better concurrency and speed

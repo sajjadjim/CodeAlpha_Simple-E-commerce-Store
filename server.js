@@ -74,6 +74,10 @@ app.use((err, req, res, next) => {
   res.status(500).json({ success: false, message: 'Internal server error occurred.' });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 CodeAlpha E-commerce Server running on http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`🚀 CodeAlpha E-commerce Server running on http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
