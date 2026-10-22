@@ -23,9 +23,9 @@ app.use(cookieParser());
 // Serve static frontend assets
 app.use(express.static(path.join(__dirname, 'public')));
 
-// API Routes`
-app.use('/api/auth', authRoutes);``
-app.use('/api/products', productRoutes``);
+// API Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 
 // Health check endpoint
